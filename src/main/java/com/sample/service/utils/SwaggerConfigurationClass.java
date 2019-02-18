@@ -36,7 +36,8 @@ public class SwaggerConfigurationClass {
     {        
 		return or(
 	            regex("/delivery.*"),
-	            regex("/pickup.*"));
+	            regex("/pickup.*"),
+	            regex("/school.*"));
      }
     
     private ApiInfo metadata() 
