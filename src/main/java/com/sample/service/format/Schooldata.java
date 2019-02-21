@@ -11,7 +11,7 @@ public class Schooldata {
 	@GeneratedValue
 	private Long schoolId;
 	private String schoolName;
-	private int standard;
+	private String standard;
 	private int studentCount;
 	private int year;
 	/**
@@ -41,13 +41,13 @@ public class Schooldata {
 	/**
 	 * @return the standard
 	 */
-	public int getStandard() {
+	public String getStandard() {
 		return standard;
 	}
 	/**
 	 * @param standard the standard to set
 	 */
-	public void setStandard(int standard) {
+	public void setStandard(String standard) {
 		this.standard = standard;
 	}
 	/**
@@ -89,7 +89,7 @@ public class Schooldata {
 	 * @param studentCount
 	 * @param year
 	 */
-	public Schooldata(Long schoolId, String schoolName, int standard, int studentCount, int year) {
+	public Schooldata(Long schoolId, String schoolName, String standard, int studentCount, int year) {
 		super();
 		this.schoolId = schoolId;
 		this.schoolName = schoolName;

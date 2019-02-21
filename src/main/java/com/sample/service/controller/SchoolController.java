@@ -1,12 +1,12 @@
 package com.sample.service.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,15 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sample.service.dbrepository.SchoolDataRepository;
 import com.sample.service.format.RequestFormat;
 import com.sample.service.format.Schooldata;
-import com.sample.service.response.format.BarLineResponseFormat;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/school")
 public class SchoolController {
 
 	@Autowired
 	SchoolDataRepository sdr;
-
+	
+	@CrossOrigin
 	@PostMapping("/getData")
 	private String getSchoolData(@RequestBody RequestFormat request) throws JSONException {
 
@@ -38,8 +39,9 @@ public class SchoolController {
 		{
 			if (request.getChartType().equalsIgnoreCase("BAR") || request.getChartType().equalsIgnoreCase("LINE")) 
 			{				
-				JSONArray labels = new JSONArray();
-				JSONArray data = new JSONArray();
+				JSONArray dataJArray = new JSONArray();
+				JSONArray labelsArray = new JSONArray();
+				JSONArray dataArray = new JSONArray();
 
 				for (Schooldata s : schoolDataList) {
 					if (s.getSchoolName().equalsIgnoreCase("MVM")) {
@@ -47,21 +49,19 @@ public class SchoolController {
 						// labels : ['','','','','','','',''];
 						// data: [{data: ['','','','','',''], label:'COUNT'}];
 
-						labels.put(s.getStandard());
-						data.put(s.getStudentCount());
+						labelsArray.put(s.getStandard());
+						dataArray.put(s.getStudentCount());
 					}
 				}
 
 				JSONObject dataLabel = new JSONObject();
-				dataLabel.put("data", data);
+				dataLabel.put("data", dataArray);
 				dataLabel.put("label", "COUNT");
 				
+				dataJArray.put(dataLabel);
 
-				JSONObject label = new JSONObject();
-				label.put("label", labels);
-
-				response.put("data", dataLabel);
-				response.put("label", label);
+				response.put("data", dataJArray);
+				response.put("label", labelsArray);
 
 			}
 			else if(request.getChartType().equalsIgnoreCase("PIE")) {
@@ -132,37 +132,36 @@ public class SchoolController {
 			ja.put(jo);
 		}
 		
-		return response.append("data", ja);
+		return response.put("data", ja);
 		
 	}
 	
 	private JSONObject getPieData(List<Schooldata> schoolDataList, String type) throws JSONException {
 		
 		JSONObject response = new JSONObject();
-		JSONArray labels = new JSONArray();
-		JSONArray data = new JSONArray();
+		JSONArray dataJArray = new JSONArray();
+		JSONArray labelsData = new JSONArray();
+		JSONArray dataData = new JSONArray();
 
 		for (Schooldata s : schoolDataList) {
 			if (s.getSchoolName().equalsIgnoreCase(type)) {
-				labels.put(s.getStandard());
-				data.put(s.getStudentCount());
+				labelsData.put(s.getStandard());
+				dataData.put(s.getStudentCount());
 			}
 			else if(s.getSchoolName().equalsIgnoreCase(type)) {
-				labels.put(s.getStandard());
-				data.put(s.getStudentCount());
+				labelsData.put(s.getStandard());
+				dataData.put(s.getStudentCount());
 			}
 		}
 
-		JSONObject dataLabel = new JSONObject();
-		dataLabel.put("data", data);
-		dataLabel.put("label", "COUNT");
+		JSONObject dataObj = new JSONObject();
+		dataObj.put("data", dataData);
+		// dataObj.put("label", "COUNT");
 		
+		dataJArray.put(dataObj);
 
-		JSONObject label = new JSONObject();
-		label.put("label", labels);
-
-		response.put("data", dataLabel);
-		response.put("label", label);
+		response.put("data", dataJArray);
+		response.put("label", labelsData);
 		
 		return response;
 	}
