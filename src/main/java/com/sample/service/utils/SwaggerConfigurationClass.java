@@ -34,17 +34,14 @@ public class SwaggerConfigurationClass {
     @SuppressWarnings("unchecked")
 	private Predicate<String> paths() 
     {        
-		return or(
-	            regex("/delivery.*"),
-	            regex("/pickup.*"),
-	            regex("/school.*"));
+		return or(regex("/school.*"));
      }
     
     private ApiInfo metadata() 
     {
         Contact contact = new Contact("", "", ""); /** Name, Contact No, email ID **/
         return new ApiInfoBuilder().title("Simple SpringBoot Demo")
-                .description("Port : 22021").version("1.0").contact(contact).build();
+                .description("Port : 222222").version("1.0").contact(contact).build();
     }
 
 }
